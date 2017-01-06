@@ -1,0 +1,4 @@
+interface banner
+${application.version}=1.0
+${application.name}
+${application.description}
