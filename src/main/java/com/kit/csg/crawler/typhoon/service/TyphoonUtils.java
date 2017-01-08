@@ -22,24 +22,16 @@ import java.util.*;
  * Created by huanm on 2016/12/6.
  */
 @Configuration
-@EnableConfigurationProperties(value = {TyphoonSourceWater.class,TyphoonSourceJP.class})
+@EnableConfigurationProperties(value = {TyphoonConfig.class,TyphoonSourceWater.class,TyphoonSourceJP.class})
 public class TyphoonUtils {
-//    private static Properties properties;
-    @Autowired
-    private TyphoonConfig typhoonConfig;
+
     @Autowired
     private TyphoonSourceWater typhoonSourceWater;
     @Autowired
     private TyphoonSourceJP typhoonSourceJP;
-//    static {
-//        try {
-////            properties= PropertiesLoaderUtils.loadProperties(new PathResource("classpath:server.properties"));
-//            properties=new Properties();
-//            properties.load(new FileInputStream("server.properties"));
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
-//    }
+    @Autowired
+    private TyphoonConfig typhoonConfig;
+
     public static Map typhoon(Integer year){
         TyphoonUtils phoonUtils=new TyphoonUtils();
         Map activities=new HashMap();

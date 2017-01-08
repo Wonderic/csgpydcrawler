@@ -3,16 +3,20 @@ package com.kit.csg.crawler.typhoon.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by huanm on 2016/12/14.
  */
-@Configuration
+@PropertySource(value = { "classpath:application.properties" })
 public class TyphoonConfig implements EnvironmentAware{
-    private static final Logger logger = LoggerFactory.getLogger(TyphoonConfig.class);
+    private final Logger logger = LoggerFactory.getLogger(TyphoonConfig.class);
     @Value("${Sourcezjwater.base}")
     private String zjwaterBase;
     @Value("${Sourcezjwater.typhoonList}")

@@ -38,7 +38,7 @@ public class TyphoonService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public static Map typhoon(Integer year){
+    public Map typhoon(Integer year){
         TyphoonUtils phoonUtils=new TyphoonUtils();
         Map activities=new HashMap();
         Map typhoonLists=phoonUtils.typhoonListJPDIGITAL(year);
@@ -51,6 +51,7 @@ public class TyphoonService {
         });
         return activities;
     }
+
     public Map typhoonListZJWATER(Integer year){
         String url=env.getProperty("typhoon.source.zjwater.typhoonList");
 //        String url=properties.getProperty("typhoon.source.zjwater.typhoonList");

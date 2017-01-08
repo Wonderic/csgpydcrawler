@@ -1,11 +1,17 @@
 package com.kit.csg.crawler.typhoon.config;
 
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by furthers on 2016/12/14.
  */
 @ConfigurationProperties(prefix = "Sourcezjwater")
+@PropertySource(value = { "classpath:application.properties" })
 public class TyphoonSourceWater {
     private String base;
     private String typhoonList;

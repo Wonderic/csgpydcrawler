@@ -1,6 +1,9 @@
 package com.kit.csg.core;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.kit.csg.crawler.typhoon.config.TyphoonConfig;
+import com.kit.csg.crawler.typhoon.config.TyphoonSourceJP;
+import com.kit.csg.crawler.typhoon.config.TyphoonSourceWater;
 import org.quartz.spi.JobFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -88,10 +91,11 @@ public class AppConfig
         return schedulerFactoryBean;
     }
 
-  /*  @Bean
-    public SessionFactory sessionFactory(){
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setHibernateProperties();
-    }*/
+    @Bean
+    public TyphoonConfig typhoonConfig(){return new TyphoonConfig();}
+    @Bean
+    public TyphoonSourceJP typhoonSourceJP(){return new TyphoonSourceJP();}
+    @Bean
+    public TyphoonSourceWater typhoonSourceWater(){return new TyphoonSourceWater();}
 
 }

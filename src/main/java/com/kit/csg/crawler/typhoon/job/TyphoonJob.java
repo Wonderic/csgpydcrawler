@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 /**
  * Created by huanm on 2016/12/6.
@@ -27,6 +28,7 @@ public class TyphoonJob implements Job{
         String startTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(startTime+" — TyphoonJob Job Start");
 
+        Map details = typhoonService.typhoon(2016);
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(startTime+" — TyphoonJob Job End");
     }
