@@ -24,6 +24,6 @@ public class StockJob implements Job{
         System.out.println(startTime+" — StockJob Job Start");
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
-        System.out.println(startTime+" — StockJob Job End");
+        System.out.println(endTime+" — StockJob Job End");
     }
 }

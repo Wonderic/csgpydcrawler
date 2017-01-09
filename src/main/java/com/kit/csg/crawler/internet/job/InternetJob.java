@@ -23,6 +23,6 @@ public class InternetJob implements Job{
         System.out.println(startTime+" — InternetJob Job Start");
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
-        System.out.println(startTime+" — InternetJob Job End");
+        System.out.println(endTime+" — InternetJob Job End");
     }
 }

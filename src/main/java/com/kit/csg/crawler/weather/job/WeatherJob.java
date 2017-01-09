@@ -25,6 +25,6 @@ public class WeatherJob implements Job{
         System.out.println(startTime+" — WeatherJob Job Start");
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
-        System.out.println(startTime+" — WeatherJob Job End");
+        System.out.println(endTime+" — WeatherJob Job End");
     }
 }

@@ -23,6 +23,6 @@ public class IndexJob implements Job{
         System.out.println(startTime+" — Index Job Start");
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
-        System.out.println(startTime+" — Index Job End");
+        System.out.println(endTime+" — Index Job End");
     }
 }

@@ -31,6 +31,6 @@ public class TyphoonJob implements Job{
         System.out.println(details2.toString());
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
-        System.out.println(startTime+" — TyphoonJob Job End");
+        System.out.println(endTime+" — TyphoonJob Job End");
     }
 }
