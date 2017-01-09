@@ -1,6 +1,6 @@
 package com.kit.csg.crawler.weather.job;
 
-import com.kit.csg.crawler.typhoon.service.TyphoonService;
+import com.kit.csg.crawler.weather.service.CloudWeatherService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -10,14 +10,11 @@ import org.springframework.stereotype.Component;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-/**
- * Created by huanm on 2016/12/6.
- */
 @Component
 public class WeatherJob implements Job{
 
     @Autowired
-    private TyphoonService typhoonService;
+    private CloudWeatherService cloudWeatherService;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {

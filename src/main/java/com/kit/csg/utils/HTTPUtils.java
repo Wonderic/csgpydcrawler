@@ -7,9 +7,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by huanm on 2016/12/6.
- */
 public class HTTPUtils {
     public static String get(String urlStr){
         StringBuffer jsonStr=new StringBuffer();

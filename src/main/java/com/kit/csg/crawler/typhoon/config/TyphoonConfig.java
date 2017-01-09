@@ -1,17 +1,11 @@
 package com.kit.csg.crawler.typhoon.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 
-/**
- * Created by huanm on 2016/12/14.
- */
 @PropertySource(value = { "classpath:application.properties" })
 @ConfigurationProperties
 public class TyphoonConfig {
-    private final Logger logger = LoggerFactory.getLogger(TyphoonConfig.class);
     String zjwaterBase;
     String zjwatertyphoonList;
     String zjwatertyhoonActivity;

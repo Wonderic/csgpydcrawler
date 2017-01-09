@@ -11,9 +11,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
-/**
- * Created by huanm on 2016/12/6.
- */
 @Component
 public class TyphoonJob implements Job{
 

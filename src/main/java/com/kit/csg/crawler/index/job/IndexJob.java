@@ -8,9 +8,6 @@ import org.springframework.stereotype.Component;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-/**
- * Created by huanm on 2016/12/6.
- */
 @Component
 public class IndexJob implements Job{
 

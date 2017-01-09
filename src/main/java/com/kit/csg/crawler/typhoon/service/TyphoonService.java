@@ -18,9 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by huanm on 2016/12/14.
- */
 @Service("typhoonService")
 public class TyphoonService {
 

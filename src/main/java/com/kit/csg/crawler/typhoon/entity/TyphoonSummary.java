@@ -7,10 +7,6 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * Created by huanm on 2016/5/15.
- */
-
 @Entity
 @Table(name = "CLOUD_TYPHOON_SUMMARY")
 public class TyphoonSummary implements Serializable{
