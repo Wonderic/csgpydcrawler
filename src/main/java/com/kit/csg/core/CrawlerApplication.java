@@ -1,6 +1,5 @@
 package com.kit.csg.core;
 
-import com.kit.csg.crawler.typhoon.config.TyphoonSourceWater;
 import com.kit.csg.crawler.index.job.IndexJob;
 import com.kit.csg.crawler.internet.job.InternetJob;
 import com.kit.csg.crawler.stock.job.StockJob;
@@ -11,12 +10,10 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableConfigurationProperties({TyphoonSourceWater.class})
 @ComponentScan(basePackages={"com.kit.csg"})
 @EntityScan(basePackages = "com.kit.csg.crawler")
 @EnableJpaRepositories(basePackages = "com.kit.csg.crawler")

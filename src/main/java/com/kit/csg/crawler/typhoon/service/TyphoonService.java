@@ -2,18 +2,13 @@ package com.kit.csg.crawler.typhoon.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.kit.csg.crawler.typhoon.config.TyphoonConfig;
 import com.kit.csg.utils.HTTPUtils;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,23 +23,16 @@ import java.util.Map;
  */
 @Service("typhoonService")
 public class TyphoonService {
-    @Autowired
-    private Environment env;
-
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private TyphoonConfig typhoonConfig;
 
-    public Map typhoon(Integer year){
-        TyphoonUtils phoonUtils=new TyphoonUtils();
+    public Map getTyphoonDataJPDIGITAL(Integer year){
         Map activities=new HashMap();
-        Map typhoonLists=phoonUtils.typhoonListJPDIGITAL(year);
+        Map typhoonLists=typhoonListJPDIGITAL(year);
         typhoonLists.forEach((k,v)->{
             Map detail=new HashMap();
-            List route=phoonUtils.phoonroutesJPDIGITAL(k.toString());
+            List route=typhoonroutesJPDIGITAL(k.toString());
             detail.put("summary",v);
             detail.put("routes",route);
             activities.put(k.toString(),detail);
@@ -52,9 +40,8 @@ public class TyphoonService {
         return activities;
     }
 
-    public Map typhoonListZJWATER(Integer year){
-        String url=env.getProperty("typhoon.source.zjwater.typhoonList");
-//        String url=properties.getProperty("typhoon.source.zjwater.typhoonList");
+    public Map getTyphoonDataZJWATER(Integer year){
+        String url=typhoonConfig.getZjwatertyphoonList();
         if (null==year){
             LocalDate localDate=LocalDate.now();
             url=url+localDate.getYear();
@@ -90,16 +77,11 @@ public class TyphoonService {
         }
         return results;
     }
-    public Map typhoonInfoZJWATER(String tfid){
-//        String url=properties.getProperty("typhoon.source.zjwater.typhoonInfo");
-        return null;
-    }
+
     public Map typhoonListJPDIGITAL(Integer year){
         Document document= null;
         Map summary=new HashMap();
-        String summary_year=env.getProperty("typhoon.source.jpdigital.typhoonList");
-//        String summary_year=TyphoonSourceWater.typhoonList;
-//        String summary_year=properties.getProperty("typhoon.source.jpdigital.typhoonList");
+        String summary_year=typhoonConfig.getJpdigitalTyphoonList();
         if (null==year){
             LocalDate localDate=LocalDate.now();
             summary_year=summary_year.replace("{year}",String.valueOf(localDate.getYear()));
@@ -132,10 +114,9 @@ public class TyphoonService {
         }
         return summary;
     }
-    public List phoonroutesJPDIGITAL(String tfid){
-//        String url=TyphoonSourceJP.typhoonList;
-        String url=env.getProperty("typhoon.routes.jpdigital.typhoonInfo");
-//        String url=properties.getProperty("typhoon.routes.jpdigital.typhoonInfo");
+
+    public List typhoonroutesJPDIGITAL(String tfid){
+        String url=typhoonConfig.getJpdigitalTyphoonInfo();
         url=url.replace("{tfid}",tfid);
         List result=new ArrayList();
         JSONObject jsonObject=JSONObject.parseObject(HTTPUtils.get(url));
@@ -158,23 +139,6 @@ public class TyphoonService {
             result.add(tf);
         });
         return result;
-    }
-
-    public HSSFSheet data2sheet(Map data){
-        HSSFWorkbook workbook=new HSSFWorkbook();
-        HSSFSheet sheet=workbook.createSheet("typhoon");
-        String[] title={"台风编号","台风信息","台风路径"};
-        HSSFRow headRow=sheet.createRow(1);
-        for (int i = 0; i < title.length; i++) {
-            Cell cell=headRow.createCell(i);
-            cell.setCellValue(title[i]);
-        }
-        HSSFRow summary=sheet.createRow(2);
-
-        HSSFRow tfroute=sheet.createRow(3);
-//        tfidRow
-
-        return sheet;
     }
 
 }

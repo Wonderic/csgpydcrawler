@@ -2,8 +2,6 @@ package com.kit.csg.core;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.kit.csg.crawler.typhoon.config.TyphoonConfig;
-import com.kit.csg.crawler.typhoon.config.TyphoonSourceJP;
-import com.kit.csg.crawler.typhoon.config.TyphoonSourceWater;
 import org.quartz.spi.JobFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -91,11 +89,17 @@ public class AppConfig
         return schedulerFactoryBean;
     }
 
-    @Bean
-    public TyphoonConfig typhoonConfig(){return new TyphoonConfig();}
-    @Bean
-    public TyphoonSourceJP typhoonSourceJP(){return new TyphoonSourceJP();}
-    @Bean
-    public TyphoonSourceWater typhoonSourceWater(){return new TyphoonSourceWater();}
+    @Bean(name="typhoonConfig")
+    public TyphoonConfig typhoonConfig(){
+        TyphoonConfig typhoonConfig = new TyphoonConfig();
+        typhoonConfig.setZjwaterBase(env.getProperty("typhoon.source.zjwater.base"));
+        typhoonConfig.setZjwatertyphoonInfo(env.getProperty("typhoon.source.zjwater.typhoonInfo"));
+        typhoonConfig.setZjwatertyphoonList(env.getProperty("typhoon.source.zjwater.typhoonList"));
+        typhoonConfig.setZjwatertyhoonActivity(env.getProperty("typhoon.source.zjwater.tyhoonActivity"));
+
+        typhoonConfig.setJpdigitalTyphoonInfo(env.getProperty("typhoon.routes.jpdigital.typhoonInfo"));
+        typhoonConfig.setJpdigitalTyphoonList(env.getProperty("typhoon.source.jpdigital.typhoonList"));
+        return typhoonConfig;
+    }
 
 }

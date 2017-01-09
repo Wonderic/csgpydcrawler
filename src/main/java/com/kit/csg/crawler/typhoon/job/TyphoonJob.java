@@ -22,13 +22,14 @@ public class TyphoonJob implements Job{
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-//        Map details1= typhoonService.typhoonListZJWATER(2016);
-//        String base=SpringProperties.getProperty("Sourcezjwater.base");
-//        String details=HTTPUtils.get("http://localhost:8080/typhoon/details");
         String startTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(startTime+" — TyphoonJob Job Start");
 
-        Map details = typhoonService.typhoon(2016);
+        Map details1 = typhoonService.getTyphoonDataJPDIGITAL(2016);
+        Map details2 = typhoonService.getTyphoonDataZJWATER(2016);
+        System.out.println(details1.toString());
+        System.out.println(details2.toString());
+
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(startTime+" — TyphoonJob Job End");
     }
