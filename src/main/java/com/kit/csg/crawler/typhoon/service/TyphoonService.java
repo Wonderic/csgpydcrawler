@@ -3,6 +3,8 @@ package com.kit.csg.crawler.typhoon.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.kit.csg.crawler.typhoon.config.TyphoonConfig;
+import com.kit.csg.crawler.typhoon.entity.TyphoonRoute;
+import com.kit.csg.crawler.typhoon.entity.TyphoonSummary;
 import com.kit.csg.utils.HTTPUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,17 +14,88 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("typhoonService")
 public class TyphoonService {
 
     @Autowired
     private TyphoonConfig typhoonConfig;
+
+    public Map getTyphoonData(){
+        Map resultMap = new HashMap();
+        Integer year =  Calendar.getInstance().get(Calendar.YEAR);
+        Map jpList = getTyphoonDataJPDIGITAL(year);
+        Map ajList = getTyphoonDataZJWATER(year);
+
+        List<TyphoonSummary> summaryList = new ArrayList();
+        List<TyphoonRoute> routeList = new ArrayList();
+
+        jpList.forEach((k1,v1)->{
+            ajList.forEach((k2,v2)->{
+                if(k1.equals(k2)){
+                    TyphoonSummary summary = new TyphoonSummary();
+                    Map jpSummaryMap = (Map)((Map)v1).get("summary");
+                    List jpRoutesList = (List)((Map)v1).get("routes");
+
+                    Map zjSummaryMap = (Map)v2;
+
+                    String id = UUID.randomUUID().toString();
+                    Integer typhoonNum = Integer.parseInt((String)k1);
+                    String typhoonNameEn = (String)jpSummaryMap.get("enname");
+                    String typhoonNameZh = (String)zjSummaryMap.get("name");
+                    Timestamp birthDate = new Timestamp(Timestamp.valueOf((jpSummaryMap.get("birth")) + ":00").getTime());
+                    Timestamp deathDate = new Timestamp(Timestamp.valueOf((jpSummaryMap.get("death")) + ":00").getTime());
+                    String liftTime = new java.text.DecimalFormat("#").format((deathDate.getTime() - birthDate.getTime())/(1000*60*60));
+                    Integer minPressure = Integer.valueOf((String)jpSummaryMap.get("minpress"));
+                    Integer typhoonStatus = Integer.valueOf((String)zjSummaryMap.get("isactive"));
+
+                    summary.setId(id);
+                    summary.setTyphoonNum(typhoonNum);
+                    summary.setTyphoonNameEn(typhoonNameEn);
+                    summary.setTyphoonNameZh(typhoonNameZh);
+                    summary.setBirthDate(birthDate);
+                    summary.setDeathDate(deathDate);
+                    summary.setLifeTime(liftTime);
+                    summary.setMinPressure(minPressure);
+                    summary.setTyphoonStatus(typhoonStatus);
+                    summaryList.add(summary);
+
+                    for(Object route:jpRoutesList){
+                        Map routeMap = (Map)route;
+                        TyphoonRoute typhoonRoute = new TyphoonRoute();
+
+                        String routeId = UUID.randomUUID().toString();
+                        Integer centeredPressure = Integer.valueOf((String)routeMap.get("pressure"));
+                        Timestamp dispTime = new Timestamp(Timestamp.valueOf(((String)(routeMap.get("time"))).substring(0,16) + ":00").getTime());
+                        Integer typhoonClass = Integer.valueOf((String)routeMap.get("class"));
+                        BigDecimal typhoonLat = BigDecimal.valueOf(Double.valueOf((String)routeMap.get("lat")));
+                        BigDecimal typhoonLng = BigDecimal.valueOf(Double.valueOf((String)routeMap.get("lng")));
+                        Integer winddStrength = Integer.valueOf((String)routeMap.get("wind"));
+
+                        typhoonRoute.setId(routeId);
+                        typhoonRoute.setTyphoonId(id);
+                        typhoonRoute.setTyphoonNum(typhoonNum.toString());
+                        typhoonRoute.setCenteredPressure(centeredPressure);
+                        typhoonRoute.setDispTime(dispTime);
+                        typhoonRoute.setTyphoonClass(typhoonClass);
+                        typhoonRoute.setTyphoonLat(typhoonLat);
+                        typhoonRoute.setTyphoonLng(typhoonLng);
+                        typhoonRoute.setWinddStrength(winddStrength);
+
+                        routeList.add(typhoonRoute);
+                    }
+                }
+            });
+        });
+
+        resultMap.put("summary",summaryList);
+        resultMap.put("route",routeList);
+        return resultMap;
+    }
 
     public Map getTyphoonDataJPDIGITAL(Integer year){
         Map activities=new HashMap();
@@ -87,23 +160,26 @@ public class TyphoonService {
         }
         try {
             document=Jsoup.connect(summary_year).timeout(6000).get();
-            Element datatable=document.getElementsByClass("TABLELIST").get(0);
-            Elements trs=datatable.children().get(0).children();
-            if (trs.size()<=1){
-                return null;
-            }else {
-                trs.remove(0);
-                trs.forEach(e->{
+            Elements elements = document.getElementsByClass("TABLELIST");
+            if(!elements.isEmpty()){
+                Element datatable= elements.get(0);
+                Elements trs=datatable.children().get(0).children();
+                if (trs.size()<=1){
+                    return null;
+                }else {
+                    trs.remove(0);
+                    trs.forEach(e->{
 //                    Elements datarow=e.getAllElements();
-                    Map<String,String> row=new HashMap();
-                    row.put("tfid",e.child(1).text());
-                    row.put("enname",e.child(2).text());
-                    row.put("basin",e.child(3).text());
-                    row.put("birth",e.child(4).text());
-                    row.put("death",e.child(5).text());
-                    row.put("minpress",e.child(7).text());
-                    summary.put(e.child(1).text(),row);
-                });
+                        Map<String,String> row=new HashMap();
+                        row.put("tfid",e.child(1).text());
+                        row.put("enname",e.child(2).text());
+                        row.put("basin",e.child(3).text());
+                        row.put("birth",e.child(4).text());
+                        row.put("death",e.child(5).text());
+                        row.put("minpress",e.child(7).text());
+                        summary.put(e.child(1).text(),row);
+                    });
+                }
             }
         }catch (IOException e){
             e.printStackTrace();
