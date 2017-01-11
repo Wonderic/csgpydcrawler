@@ -15,7 +15,7 @@ import java.util.Map;
 public class SOAPUtils {
     //    private static String ns="http://axisversion.sample";
 //    private static String wsdlUrl="http://127.0.0.1:8080/axis2/services/Version?wsdl";
-    public boolean send(String prefix, String namespace, String wsdlUrl, String method, Map params) {
+    public static boolean send(String prefix, String namespace, String wsdlUrl, String method, Map params) {
 //        String ns="http://axisversion.sample";
 //        String wsdlUrl="http://127.0.0.1:8080/axis2/services/Version?wsdl";
 

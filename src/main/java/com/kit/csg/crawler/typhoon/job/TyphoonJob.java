@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 @Component
 public class TyphoonJob implements Job{
