@@ -25,9 +25,14 @@ public class TyphoonService {
     @Autowired
     private TyphoonConfig typhoonConfig;
 
-    public Map getTyphoonData(){
+    public boolean getData(){
+        Map data = getTyphoonData();
+        return false;
+    }
+    private Map getTyphoonData(){
         Map resultMap = new HashMap();
-        Integer year =  Calendar.getInstance().get(Calendar.YEAR);
+//        Integer year =  Calendar.getInstance().get(Calendar.YEAR);
+        Integer year=2016;
         Map jpList = getTyphoonDataJPDIGITAL(year);
         Map ajList = getTyphoonDataZJWATER(year);
 
@@ -97,7 +102,7 @@ public class TyphoonService {
         return resultMap;
     }
 
-    public Map getTyphoonDataJPDIGITAL(Integer year){
+    private Map getTyphoonDataJPDIGITAL(Integer year){
         Map activities=new HashMap();
         Map typhoonLists=typhoonListJPDIGITAL(year);
         typhoonLists.forEach((k,v)->{
@@ -110,7 +115,7 @@ public class TyphoonService {
         return activities;
     }
 
-    public Map getTyphoonDataZJWATER(Integer year){
+    private Map getTyphoonDataZJWATER(Integer year){
         String url=typhoonConfig.getZjwatertyphoonList();
         if (null==year){
             LocalDate localDate=LocalDate.now();
@@ -148,7 +153,7 @@ public class TyphoonService {
         return results;
     }
 
-    public Map typhoonListJPDIGITAL(Integer year){
+    private Map typhoonListJPDIGITAL(Integer year){
         Document document= null;
         Map summary=new HashMap();
         String summary_year=typhoonConfig.getJpdigitalTyphoonList();
@@ -188,7 +193,7 @@ public class TyphoonService {
         return summary;
     }
 
-    public List typhoonroutesJPDIGITAL(String tfid){
+    private List typhoonroutesJPDIGITAL(String tfid){
         String url=typhoonConfig.getJpdigitalTyphoonInfo();
         url=url.replace("{tfid}",tfid);
         List result=new ArrayList();

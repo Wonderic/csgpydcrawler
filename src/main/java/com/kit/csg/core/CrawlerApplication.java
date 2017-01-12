@@ -18,7 +18,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "com.kit.csg.crawler")
 @EnableJpaRepositories(basePackages = "com.kit.csg.crawler")
 public class CrawlerApplication {
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 		SpringApplication.run(CrawlerApplication.class, args);
 		Scheduler scheduler=null;
 		try {
@@ -42,11 +42,14 @@ public class CrawlerApplication {
 			//百度、阿里数据
 			JobDetail internetJobDetail= JobBuilder.newJob(InternetJob.class).withIdentity("internet","csgpydcrawler").build();
 
-			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever()).build());
-			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever()).build());
-			scheduler.scheduleJob(stockJobDetail,TriggerBuilder.newTrigger().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever()).build());
-			scheduler.scheduleJob(indexJobDetail,TriggerBuilder.newTrigger().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever()).build());
-			scheduler.scheduleJob(internetJobDetail,TriggerBuilder.newTrigger().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever()).build());
+			SimpleScheduleBuilder scheduleBuilder=SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever();
+			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+
+//			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/2 ? * *")).build());
+//			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 * * ? * *")).build());
+//			scheduler.scheduleJob(stockJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 * * ? * *")).build());
+//			scheduler.scheduleJob(indexJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 * * ? * *")).build());
+//			scheduler.scheduleJob(internetJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 * * ? * *")).build());
 		}catch (SchedulerException e){
 			e.printStackTrace();
 		}
