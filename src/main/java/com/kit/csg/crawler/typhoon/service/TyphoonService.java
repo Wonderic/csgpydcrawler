@@ -25,7 +25,7 @@ public class TyphoonService {
     @Autowired
     private TyphoonConfig typhoonConfig;
 
-    public boolean getData(){
+    public boolean crawlData(){
         Map data = getTyphoonData();
         return false;
     }

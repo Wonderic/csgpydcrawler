@@ -45,6 +45,9 @@ public class CrawlerApplication {
 			SimpleScheduleBuilder scheduleBuilder=SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever();
 			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
 
+			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+
+
 //			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/2 ? * *")).build());
 //			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 * * ? * *")).build());
 //			scheduler.scheduleJob(stockJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 * * ? * *")).build());

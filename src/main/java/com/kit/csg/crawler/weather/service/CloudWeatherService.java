@@ -1,15 +1,19 @@
 package com.kit.csg.crawler.weather.service;
 
+import com.kit.csg.crawler.weather.entity.CITY;
 import com.kit.csg.crawler.weather.entity.CLOUD_WEATHER_TABLE;
+import com.kit.csg.crawler.weather.repository.CityRepository;
 import com.kit.csg.crawler.weather.repository.CloudWeatherRepository;
+import com.kit.csg.utils.HTTPUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.ModelAndView;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +23,9 @@ import java.util.UUID;
 public class CloudWeatherService {
     @Resource(name = "cloudWeatherRepository")
     CloudWeatherRepository cloudWeatherRepository;
+
+    @Resource(name="cityRepository")
+    CityRepository cityRepository;
 
     private static final String URL = "http://sixweather.3gpk.net/SixWeather.aspx?city=%s";
 
@@ -34,7 +41,7 @@ public class CloudWeatherService {
         cloudWeatherRepository.save(list);
     }
 
-    public ModelAndView crawlerWeather() {
+    public boolean crawlData() {
         String formatUrl;
         ArrayList<CLOUD_WEATHER_TABLE> weatherlist;
         ArrayList<CLOUD_WEATHER_TABLE> updateWeatherList;
@@ -44,10 +51,10 @@ public class CloudWeatherService {
         weatherlist = new ArrayList<>();
         updateWeatherList = new ArrayList<>();
 
-       /* List<PageData> cityListss = liveWeatherMapper.selectCity();
+        List<CITY> cityList = cityRepository.findAll();
 
         //=============设置需要返回的数据量
-        for (int i = 0; i < cityListss.size(); i++) {
+        for (int i = 0; i < cityList.size(); i++) {
             try {
                 Thread.sleep(800);
             } catch (InterruptedException e) {
@@ -57,14 +64,14 @@ public class CloudWeatherService {
             //下载数据
             try {
                 formatUrl = String.format(URL,
-                        URLEncoder.encode(cityListss.get(i).getString("name"), "utf-8"));
+                        URLEncoder.encode(cityList.get(i).getName()));
                 result = HTTPUtils.HttpGetJson(formatUrl);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                CityError ce = new CityError();
-                ce.setCityName(cityListss.get(i).getString("name"));
-                ce.setErrorInfo(e.getMessage());
-                logger.error(ce.toString());
+//                // TODO Auto-generated catch block
+//                CityError ce = new CityError();
+//                ce.setCityName(cityListss.get(i).getString("name"));
+//                ce.setErrorInfo(e.getMessage());
+//                logger.error(ce.toString());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -72,20 +79,17 @@ public class CloudWeatherService {
             CLOUD_WEATHER_TABLE weatherInfo = parseWeatherInfo(result);
             weatherlist.add(weatherInfo);
             if (weatherlist.size() >= 100) {
-                liveWeatherMapper.insertData(weatherlist);
-                SendData_ASN(weatherlist, Const.DayWeather.get());
+               // liveWeatherMapper.insertData(weatherlist);
+                //SendData_ASN(weatherlist, Const.DayWeather.get());
                 weatherlist =new ArrayList<>();
             }
 
         }
         if (weatherlist.size() > 0) {
-            SendData_ASN(weatherlist, Const.DayWeather.get());
-        }*/
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("finish");
-        mv.addObject("message", "download finish");
+            //SendData_ASN(weatherlist, Const.DayWeather.get());
+        }
 
-        return mv;
+        return false;
     }
 
 

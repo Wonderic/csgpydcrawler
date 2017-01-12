@@ -21,6 +21,8 @@ public class WeatherJob implements Job{
         String startTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(startTime+" — WeatherJob Job Start");
 
+        cloudWeatherService.crawlData();
+
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(endTime+" — WeatherJob Job End");
     }
