@@ -15,8 +15,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan(basePackages={"com.kit.csg"})
-@EntityScan(basePackages = "com.kit.csg.crawler")
-@EnableJpaRepositories(basePackages = "com.kit.csg.crawler")
+@EntityScan(basePackages = "com.kit.csg")
+@EnableJpaRepositories(basePackages = "com.kit.csg")
 public class CrawlerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CrawlerApplication.class, args);
@@ -43,9 +43,9 @@ public class CrawlerApplication {
 			JobDetail internetJobDetail= JobBuilder.newJob(InternetJob.class).withIdentity("internet","csgpydcrawler").build();
 
 			SimpleScheduleBuilder scheduleBuilder=SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever();
-//			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
 //			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
-			scheduler.scheduleJob(stockJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+//			scheduler.scheduleJob(stockJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
 
 
 //			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/2 ? * *")).build());

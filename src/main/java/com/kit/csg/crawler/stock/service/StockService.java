@@ -9,6 +9,7 @@ import com.kit.csg.crawler.stock.repository.*;
 import com.kit.csg.crawler.stock.vo.*;
 import com.kit.csg.utils.HTTPUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.http.ParseException;
 import org.apache.http.client.utils.DateUtils;
 import org.jsoup.Jsoup;
@@ -17,7 +18,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.sqlite.date.DateFormatUtils;
 
 import javax.annotation.Resource;
 import java.io.File;

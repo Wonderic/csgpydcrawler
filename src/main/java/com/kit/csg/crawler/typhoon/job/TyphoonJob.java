@@ -1,7 +1,6 @@
 package com.kit.csg.crawler.typhoon.job;
 
 import com.kit.csg.crawler.typhoon.service.TyphoonService;
-import com.kit.csg.utils.SOAPUtils;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -24,7 +23,7 @@ public class TyphoonJob implements Job{
         System.out.println(startTime+" — TyphoonJob Job Start");
 
         Map data = typhoonService.crawlData();
-        SOAPUtils.send(data);
+//        SOAPUtils.send(data);
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(endTime+" — TyphoonJob Job End");

@@ -5,13 +5,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.kit.csg.crawler.typhoon.config.TyphoonConfig;
 import com.kit.csg.crawler.typhoon.entity.TyphoonRoute;
 import com.kit.csg.crawler.typhoon.entity.TyphoonSummary;
+import com.kit.csg.crawler.typhoon.repositories.TyphoonRouteRepository;
+import com.kit.csg.crawler.typhoon.repositories.TyphoonSummaryRepository;
 import com.kit.csg.utils.HTTPUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -24,10 +29,20 @@ public class TyphoonService {
 
     @Autowired
     private TyphoonConfig typhoonConfig;
+    @Autowired
+    private TyphoonSummaryRepository typhoonSummaryRepository;
+    @Autowired
+    private TyphoonRouteRepository typhoonRouteRepository;
 
+    @Transactional(propagation= Propagation.REQUIRES_NEW)
     public Map crawlData(){
         Map data = getTyphoonData();
         return data;
+    }
+
+    @Transactional(propagation= Propagation.REQUIRES_NEW)
+    private void  batchSaveSummary(List<TyphoonSummary> typhoonSummaryList){
+        typhoonSummaryRepository.save(typhoonSummaryList.get(0));
     }
     private Map getTyphoonData(){
         Map resultMap = new HashMap();
@@ -91,15 +106,38 @@ public class TyphoonService {
                         typhoonRoute.setTyphoonLat(typhoonLat);
                         typhoonRoute.setTyphoonLng(typhoonLng);
                         typhoonRoute.setWinddStrength(winddStrength);
-
                         routeList.add(typhoonRoute);
                     }
                 }
             });
         });
 
-        resultMap.put("summary",summaryList);
-        resultMap.put("route",routeList);
+        List<TyphoonSummary> summaryListTemp = new ArrayList();
+        List<TyphoonRoute> routeListTemp = new ArrayList();
+        summaryList.forEach(o->{
+            TyphoonSummary typhoonSummaryNew = new TyphoonSummary();
+            typhoonSummaryNew.setTyphoonNum(o.getTyphoonNum());
+            TyphoonSummary typhoonSummaryTemp = typhoonSummaryRepository.findOne(Example.of(typhoonSummaryNew));
+            if(null == typhoonSummaryTemp)
+                summaryListTemp.add(o);
+        });
+        routeList.forEach(o->{
+            TyphoonRoute typhoonRouteNew = new TyphoonRoute();
+            typhoonRouteNew.setTyphoonNum(o.getTyphoonNum());
+            typhoonRouteNew.setDispTime(o.getDispTime());
+            TyphoonRoute typhoonRouteTemp = typhoonRouteRepository.findOne(Example.of(typhoonRouteNew));
+            if(null == typhoonRouteTemp)
+                routeListTemp.add(o);
+        });
+
+        typhoonSummaryRepository.save(summaryListTemp.get(0));
+
+//        batchSaveSummary(summaryListTemp);
+//        typhoonSummaryRepository.flush();
+//        typhoonRouteRepository.save(routeListTemp);
+//        typhoonRouteRepository.flush();
+        resultMap.put("summary",summaryListTemp);
+        resultMap.put("route",routeListTemp);
         return resultMap;
     }
 
