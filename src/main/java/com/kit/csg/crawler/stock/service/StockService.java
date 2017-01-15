@@ -329,7 +329,7 @@ public class StockService {
         String baseUrl = "http://trends.baidu.com/economy/api?&sample_name=index&classify=predict_index&index="+encUrl;
         String[] parsePatterns = {"yyyy-MM-dd"};
         HTTPUtils htmlParse = new HTTPUtils();
-        String bdjson = htmlParse.getHtml(baseUrl);
+        String bdjson = HTTPUtils.getHtml(baseUrl);
 
         JSONObject jo = (JSONObject)JSONUtils.parse(bdjson);
         JSONArray predict=jo.getJSONArray("predict");
@@ -460,7 +460,7 @@ public class StockService {
                         +"&rowcode=reg&colcode=sj&wds=["+encUrl+"]&dfwds=["+encUrl2+"]";
 
                 HTTPUtils htmlParse = new HTTPUtils();
-                String strJson = htmlParse.getHtml(baseUrl);
+                String strJson = HTTPUtils.getHtml(baseUrl);
 
                 if (!strJson.equals("")) {
                     JSONObject jo = (JSONObject)JSONUtils.parse(strJson);
@@ -556,7 +556,7 @@ public class StockService {
                 String baseUrl = "http://data.stats.gov.cn/easyquery.htm?m=QueryData&dbcode=hgyd&rowcode=zb&colcode=sj&wds=[]&dfwds=["+encUrl+"]";
 
                 HTTPUtils htmlParse = new HTTPUtils();
-                String strJson = htmlParse.getHtml(baseUrl);
+                String strJson = HTTPUtils.getHtml(baseUrl);
 
                 if (!strJson.equals("")) {
                     JSONObject jo = (JSONObject)JSONUtils.parse(strJson);
@@ -603,7 +603,7 @@ public class StockService {
         hgurl="http://data.stats.gov.cn/easyquery.htm?m=QueryData&dbcode=csnd&rowcode=reg&colcode=sj&wds=["+urlcode+"]&dfwds=["+urlcode2+"]";
         //取地区
         HTTPUtils htmlParse = new HTTPUtils();
-        String sJson=htmlParse.getHtml(hgurl);
+        String sJson= HTTPUtils.getHtml(hgurl);
         JSONObject jo=(JSONObject)JSONUtils.parse(sJson);
         JSONObject returndata=jo.getJSONObject("returndata");
         JSONArray wdnodes=returndata.getJSONArray("wdnodes");
@@ -631,7 +631,7 @@ public class StockService {
     public void dealIndexInfo(String url)
     {
         HTTPUtils htmlParse = new HTTPUtils();
-        String sJson=htmlParse.getHtml(url);
+        String sJson= HTTPUtils.getHtml(url);
         JSONArray ja=(JSONArray)JSONUtils.parse(sJson);
         NbsIndexinfoHg nih=new NbsIndexinfoHg();
         for(int i=0;i<ja.size();i++)
@@ -686,7 +686,7 @@ public class StockService {
                     String baseUrl = "http://data.stats.gov.cn/easyquery.htm?m=QueryData&dbcode=hgnd&rowcode=zb"
                             +"&colcode=sj&wds=["+encUrl2+"]&dfwds=["+encUrl+"]";
                     baseUrl=baseUrl.replaceAll("dbcode=\\w+&", "dbcode="+dbcode+"&");
-                    String last=htmlParse.getHtml(baseUrl);
+                    String last= HTTPUtils.getHtml(baseUrl);
                     if(!last.equals(""))
                     {
                         JSONObject jolast=(JSONObject)JSONUtils.parse(last);
@@ -799,7 +799,7 @@ public class StockService {
                         +"&rowcode=reg&colcode=sj&wds=["+encUrl+"]&dfwds=["+encUrl2+"]";
 
                 HTTPUtils htmlParse = new HTTPUtils();
-                String strJson = htmlParse.getHtml(baseUrl);
+                String strJson = HTTPUtils.getHtml(baseUrl);
 
                 if (!strJson.equals("")) {
                     JSONObject jo = (JSONObject)JSONUtils.parse(strJson);
@@ -890,7 +890,7 @@ public class StockService {
 
         url="http://quotes.money.163.com/trade/lsjysj_"+stockcode+".html?year="+year+"&season="+season;
         String bhtml;
-        bhtml = htmlParse.getHtml(url);
+        bhtml = HTTPUtils.getHtml(url);
 
         if (bhtml.equals("")) {
             System.err.println("网址不正确");
@@ -926,7 +926,7 @@ public class StockService {
                     year=String.valueOf(m);
                     season=String.valueOf(n);
                     url="http://quotes.money.163.com/trade/lsjysj_"+stockcode+".html?year="+year+"&season="+season;
-                    bhtml = htmlParse.getHtml(url);
+                    bhtml = HTTPUtils.getHtml(url);
                     doc = Jsoup.parse(bhtml);
 
                     Elements els = doc.getElementsByClass("table_bg001");

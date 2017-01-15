@@ -158,9 +158,8 @@ public class DIM_STOCKCOMPANYINFORMATION implements Serializable {
         if (STOCKBNAME != null ? !STOCKBNAME.equals(that.STOCKBNAME) : that.STOCKBNAME != null) return false;
         if (STOCKBDATE != null ? !STOCKBDATE.equals(that.STOCKBDATE) : that.STOCKBDATE != null) return false;
         if (PROVIDENAME != null ? !PROVIDENAME.equals(that.PROVIDENAME) : that.PROVIDENAME != null) return false;
-        if (CSRC != null ? !CSRC.equals(that.CSRC) : that.CSRC != null) return false;
+        return CSRC != null ? CSRC.equals(that.CSRC) : that.CSRC == null;
 
-        return true;
     }
 
     @Override
