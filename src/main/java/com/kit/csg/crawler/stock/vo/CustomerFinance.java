@@ -1,13 +1,13 @@
 package com.kit.csg.crawler.stock.vo;
 
-import org.joda.time.DateTime;
+import java.sql.Timestamp;
 
 /**
  * Created by Robin on 2016-08-17.
  */
 public class CustomerFinance {
     private String SFID;
-    private String SFDATE;
+    private Timestamp SFDATE;
     private String STOCKCODE;
     private Double MAINBUSSINCOME;
     private Double MAINBUSSPROFIT;
@@ -33,16 +33,12 @@ public class CustomerFinance {
         this.SFID = SFID;
     }
 
-    public String getSFDATE() {
+    public Timestamp getSFDATE() {
         return SFDATE;
     }
 
-    public void setSFDATE(DateTime SFDATE) {
-        this.SFDATE = SFDATE.toString("yyyy-MM-dd 00:00:00");
-    }
-
-    public void setSFDATE(String SFDATE){
-        this.SFDATE =SFDATE;
+    public void setSFDATE(Timestamp SFDATE) {
+        this.SFDATE = SFDATE;
     }
 
     public String getSTOCKCODE() {
