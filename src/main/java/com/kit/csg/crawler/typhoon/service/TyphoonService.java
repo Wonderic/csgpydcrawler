@@ -25,12 +25,13 @@ public class TyphoonService {
     @Autowired
     private TyphoonConfig typhoonConfig;
 
-    public boolean crawlData(){
+    public Map crawlData(){
         Map data = getTyphoonData();
-        return false;
+        return data;
     }
     private Map getTyphoonData(){
         Map resultMap = new HashMap();
+        resultMap.put("type","typhoon");
 //        Integer year =  Calendar.getInstance().get(Calendar.YEAR);
         Integer year=2016;
         Map jpList = getTyphoonDataJPDIGITAL(year);

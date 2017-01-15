@@ -1,9 +1,16 @@
 package com.kit.csg.utils;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -131,5 +138,78 @@ public class HTTPUtils {
             throw e;
         }
 
+    }
+
+    public static HtmlPage htmlSave(String url) throws IOException
+    {
+
+        final WebClient webClient=new WebClient(BrowserVersion.CHROME);
+        webClient.getOptions().setCssEnabled(true);
+        webClient.getOptions().setJavaScriptEnabled(true);
+        webClient.setAjaxController(new NicelyResynchronizingAjaxController());
+        final HtmlPage page=webClient.getPage(url);
+        webClient.close();
+        return page;
+    }
+
+    /**
+     * 获取网页HTML源代码
+     *
+     * @param url
+     * @return
+     * @throws ParseException
+     * @throws IOException
+     */
+
+    public static String getHtml(String url)  {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        try{
+            HttpGet get = new HttpGet(url);
+            CloseableHttpResponse httpResponse = httpclient.execute(get);
+            try{
+                HttpEntity entity = httpResponse.getEntity();
+                return EntityUtils.toString(entity,"UTF-8");
+            } finally{
+                httpResponse.close();
+            }
+        }catch(HttpHostConnectException e) {
+            System.out.println("****"+url+"****");
+            try {
+                httpclient.close();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            return null;
+        }catch(ParseException e)
+        {
+            e.printStackTrace();
+            try {
+                httpclient.close();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            return null;
+        }catch(IOException e)
+        {
+            e.printStackTrace();
+            try {
+                httpclient.close();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            return null;
+        }
+        finally {
+            if (httpclient != null) {
+                try {
+                    httpclient.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

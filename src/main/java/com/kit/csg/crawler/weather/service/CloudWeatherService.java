@@ -14,9 +14,7 @@ import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service("cloudWeatherService")
 @Transactional
@@ -41,7 +39,10 @@ public class CloudWeatherService {
         cloudWeatherRepository.save(list);
     }
 
-    public boolean crawlData() {
+    public Map crawlData() {
+        Map resultMap = new HashMap();
+        resultMap.put("type","typhoon");
+
         String formatUrl;
         ArrayList<CLOUD_WEATHER_TABLE> weatherlist;
         ArrayList<CLOUD_WEATHER_TABLE> updateWeatherList;
@@ -63,19 +64,13 @@ public class CloudWeatherService {
             }
             //下载数据
             try {
-                formatUrl = String.format(URL,
-                        URLEncoder.encode(cityList.get(i).getName()));
+                formatUrl = String.format(URL, URLEncoder.encode(cityList.get(i).getName()));
                 result = HTTPUtils.HttpGetJson(formatUrl);
             } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                CityError ce = new CityError();
-//                ce.setCityName(cityListss.get(i).getString("name"));
-//                ce.setErrorInfo(e.getMessage());
-//                logger.error(ce.toString());
+                e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // System.out.println(result);
             CLOUD_WEATHER_TABLE weatherInfo = parseWeatherInfo(result);
             weatherlist.add(weatherInfo);
             if (weatherlist.size() >= 100) {
@@ -89,7 +84,7 @@ public class CloudWeatherService {
             //SendData_ASN(weatherlist, Const.DayWeather.get());
         }
 
-        return false;
+        return resultMap;
     }
 
 

@@ -43,9 +43,9 @@ public class CrawlerApplication {
 			JobDetail internetJobDetail= JobBuilder.newJob(InternetJob.class).withIdentity("internet","csgpydcrawler").build();
 
 			SimpleScheduleBuilder scheduleBuilder=SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever();
-			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
-
-			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+//			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+//			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+			scheduler.scheduleJob(stockJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
 
 
 //			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/2 ? * *")).build());

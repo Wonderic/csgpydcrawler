@@ -1,6 +1,7 @@
 package com.kit.csg.crawler.weather.job;
 
 import com.kit.csg.crawler.weather.service.CloudWeatherService;
+import com.kit.csg.utils.SOAPUtils;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 @Component
 public class WeatherJob implements Job{
@@ -21,7 +23,8 @@ public class WeatherJob implements Job{
         String startTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(startTime+" — WeatherJob Job Start");
 
-        cloudWeatherService.crawlData();
+        Map data = cloudWeatherService.crawlData();
+        SOAPUtils.send(data);
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(endTime+" — WeatherJob Job End");
