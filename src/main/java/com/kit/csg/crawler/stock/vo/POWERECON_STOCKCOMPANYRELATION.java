@@ -52,9 +52,8 @@ public class POWERECON_STOCKCOMPANYRELATION implements Serializable {
 
         if (SCID != null ? !SCID.equals(that.SCID) : that.SCID != null) return false;
         if (STOCKCODE != null ? !STOCKCODE.equals(that.STOCKCODE) : that.STOCKCODE != null) return false;
-        if (LAPC_ID != null ? !LAPC_ID.equals(that.LAPC_ID) : that.LAPC_ID != null) return false;
+        return LAPC_ID != null ? LAPC_ID.equals(that.LAPC_ID) : that.LAPC_ID == null;
 
-        return true;
     }
 
     @Override
