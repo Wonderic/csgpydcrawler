@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
@@ -17,17 +16,17 @@ public class TyphoonRoute  implements Serializable {
 	@Column
 	private String typhoonNum;
 	@Column
-	private BigDecimal typhoonLng;
+	private String typhoonLng;
 	@Column
-	private BigDecimal typhoonLat;
+	private String typhoonLat;
 	@Column
-	private int winddStrength;
+	private Integer winddStrength;
 	@Column
-	private int centeredPressure;
+	private Integer centeredPressure;
 	@Column
 	private Timestamp dispTime;
 	@Column
-	private int typhoonClass;
+	private Integer typhoonClass;
 	@Column
 	private String typhoonId;
 
@@ -47,35 +46,35 @@ public class TyphoonRoute  implements Serializable {
 		this.typhoonNum = typhoonNum;
 	}
 
-	public BigDecimal getTyphoonLng() {
+	public String getTyphoonLng() {
 		return typhoonLng;
 	}
 
-	public void setTyphoonLng(BigDecimal typhoonLng) {
+	public void setTyphoonLng(String typhoonLng) {
 		this.typhoonLng = typhoonLng;
 	}
 
-	public BigDecimal getTyphoonLat() {
+	public String getTyphoonLat() {
 		return typhoonLat;
 	}
 
-	public void setTyphoonLat(BigDecimal typhoonLat) {
+	public void setTyphoonLat(String typhoonLat) {
 		this.typhoonLat = typhoonLat;
 	}
 
-	public int getWinddStrength() {
+	public Integer getWinddStrength() {
 		return winddStrength;
 	}
 
-	public void setWinddStrength(int winddStrength) {
+	public void setWinddStrength(Integer winddStrength) {
 		this.winddStrength = winddStrength;
 	}
 
-	public int getCenteredPressure() {
+	public Integer getCenteredPressure() {
 		return centeredPressure;
 	}
 
-	public void setCenteredPressure(int centeredPressure) {
+	public void setCenteredPressure(Integer centeredPressure) {
 		this.centeredPressure = centeredPressure;
 	}
 
@@ -87,11 +86,11 @@ public class TyphoonRoute  implements Serializable {
 		this.dispTime = dispTime;
 	}
 
-	public int getTyphoonClass() {
+	public Integer getTyphoonClass() {
 		return typhoonClass;
 	}
 
-	public void setTyphoonClass(int typhoonClass) {
+	public void setTyphoonClass(Integer typhoonClass) {
 		this.typhoonClass = typhoonClass;
 	}
 

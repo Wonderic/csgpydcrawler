@@ -42,9 +42,9 @@ public class CrawlerApplication {
 			//百度、阿里数据
 			JobDetail internetJobDetail= JobBuilder.newJob(InternetJob.class).withIdentity("internet","csgpydcrawler").build();
 
-			SimpleScheduleBuilder scheduleBuilder=SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever();
-			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
-//			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+			SimpleScheduleBuilder scheduleBuilder=SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1000).repeatForever();
+//			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
 //			scheduler.scheduleJob(stockJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
 
 

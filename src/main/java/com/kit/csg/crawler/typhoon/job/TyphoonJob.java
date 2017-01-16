@@ -23,7 +23,10 @@ public class TyphoonJob implements Job{
         System.out.println(startTime+" — TyphoonJob Job Start");
 
         Map data = typhoonService.crawlData();
-//        SOAPUtils.send(data);
+//        boolean sendResult = SOAPUtils.send(data);
+        if(true){
+            typhoonService.saveData(data);
+        }
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(endTime+" — TyphoonJob Job End");

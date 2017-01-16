@@ -5,6 +5,7 @@ import com.kit.csg.crawler.weather.entity.CLOUD_WEATHER_TABLE;
 import com.kit.csg.crawler.weather.repository.CityRepository;
 import com.kit.csg.crawler.weather.repository.CloudWeatherRepository;
 import com.kit.csg.utils.HTTPUtils;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xmlpull.v1.XmlPullParser;
@@ -27,21 +28,14 @@ public class CloudWeatherService {
 
     private static final String URL = "http://sixweather.3gpk.net/SixWeather.aspx?city=%s";
 
-    public List<CLOUD_WEATHER_TABLE> findAll(){
-      return  cloudWeatherRepository.findAll();
-    }
 
-    public void save(CLOUD_WEATHER_TABLE cloud_weather_table){
-        cloudWeatherRepository.save(cloud_weather_table);
+    public void saveData(Map map){
+        List<CLOUD_WEATHER_TABLE> weatherList = (List)map.get("weather");
+        cloudWeatherRepository.save(weatherList);
     }
-
-    public void save(List<CLOUD_WEATHER_TABLE> list){
-        cloudWeatherRepository.save(list);
-    }
-
     public Map crawlData() {
         Map resultMap = new HashMap();
-        resultMap.put("type","typhoon");
+        resultMap.put("type","weather");
 
         String formatUrl;
         ArrayList<CLOUD_WEATHER_TABLE> weatherlist;
@@ -50,12 +44,9 @@ public class CloudWeatherService {
 
         // init
         weatherlist = new ArrayList<>();
-        updateWeatherList = new ArrayList<>();
 
         List<CITY> cityList = cityRepository.findAll();
-
-        //=============设置需要返回的数据量
-        for (int i = 0; i < cityList.size(); i++) {
+        for (int i = 0; i < 10; i++) {
             try {
                 Thread.sleep(800);
             } catch (InterruptedException e) {
@@ -72,18 +63,18 @@ public class CloudWeatherService {
                 e.printStackTrace();
             }
             CLOUD_WEATHER_TABLE weatherInfo = parseWeatherInfo(result);
-            weatherlist.add(weatherInfo);
-            if (weatherlist.size() >= 100) {
-               // liveWeatherMapper.insertData(weatherlist);
-                //SendData_ASN(weatherlist, Const.DayWeather.get());
-                weatherlist =new ArrayList<>();
+
+            CLOUD_WEATHER_TABLE cloud_weather_table_temp = new CLOUD_WEATHER_TABLE();
+            String cityCode = weatherInfo.getCITY_CODE();
+            String inTime = weatherInfo.getINTIME();
+            cloud_weather_table_temp.setCITY_CODE(cityCode);
+            cloud_weather_table_temp.setINTIME(inTime);
+            cloud_weather_table_temp = cloudWeatherRepository.findOne(Example.of(cloud_weather_table_temp));
+            if(cloud_weather_table_temp == null){
+                weatherlist.add(weatherInfo);
             }
-
         }
-        if (weatherlist.size() > 0) {
-            //SendData_ASN(weatherlist, Const.DayWeather.get());
-        }
-
+        resultMap.put("weather",weatherlist);
         return resultMap;
     }
 

@@ -33,9 +33,9 @@ public class TyphoonSummary implements Serializable{
 	private String lifeTime;
 
     @Column
-	private int minPressure;
+	private Integer minPressure;
     @Column
-	private int typhoonStatus;
+	private Integer typhoonStatus;
 
     public String getId() {
         return id;
@@ -93,19 +93,19 @@ public class TyphoonSummary implements Serializable{
         this.lifeTime = lifeTime;
     }
 
-    public int getMinPressure() {
+    public Integer getMinPressure() {
         return minPressure;
     }
 
-    public void setMinPressure(int minPressure) {
+    public void setMinPressure(Integer minPressure) {
         this.minPressure = minPressure;
     }
 
-    public int getTyphoonStatus() {
+    public Integer getTyphoonStatus() {
         return typhoonStatus;
     }
 
-    public void setTyphoonStatus(int typhoonStatus) {
+    public void setTyphoonStatus(Integer typhoonStatus) {
         this.typhoonStatus = typhoonStatus;
     }
 }

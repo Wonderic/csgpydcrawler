@@ -1,6 +1,7 @@
 package com.kit.csg.crawler.stock.service;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gargoylesoftware.htmlunit.html.DomElement;
@@ -46,7 +47,6 @@ public class StockService {
     StockMarketRepository stockMarketRepository;
 
     public boolean crawlData(){
-
         return false;
     }
 
@@ -99,6 +99,16 @@ public class StockService {
         }
 
     }
+*/
+
+    public static void main(String[] args)  {
+        try{
+            //getStockMarket();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * 获取证券指数
@@ -109,29 +119,23 @@ public class StockService {
 //		http://www.k780.com/api 注册该网站获取当前股市 修改appkey与
         String baseUrl = "http://api.k780.com:88/?app=finance.globalindex&appkey=19264&sign=627a9ccb533cc051bd341cbce1e1ee1f&format=json";
         String jsonStr = HTTPUtils.getHtml(baseUrl);
-//
-//		String jsonpath = stockSetting.getSavepath()+File.separator+"all.json";
-//		String jsonStr=FileUtils.readFileToString(new File(jsonpath));
 
         String[] parsePatterns = {"yyyy-MM-dd"};
 
-
-        String stockname = "";
-        String INDEXDATA = "";
-        String RCID;
-        Date tmpdate = null;
-
         if(!jsonStr.equals(""))
         {
-
-            JSONObject jo= (JSONObject) JSONUtils.parse(jsonStr);
+            JSONObject jo= JSON.parseObject(jsonStr);
             JSONObject jo_result=jo.getJSONObject("result");
-            StockMarket ps=new StockMarket();
-            StockMarket psu=new StockMarket();
-            StockMarket pcp=new StockMarket();
+            StockMarket stockMarket=new StockMarket();
             List<StockMarket> psa=new ArrayList<StockMarket>();
 
             Iterator io=jo_result.keySet().iterator();
+
+            String stockname = "";
+            String INDEXDATA = "";
+            String RCID;
+            Date tmpdate = null;
+
             while(io.hasNext())
             {
                 String key=io.next().toString();
@@ -141,34 +145,10 @@ public class StockService {
                 tmpdate= DateUtils.parseDate(ja_result.getString("uptime").substring(0,10),parsePatterns);
                 stockname=ja_result.getString("inxnm");
                 INDEXDATA=ja_result.getString("last_price");
-                ps.setId(RCID);
-                ps.setItemDate(new Timestamp(tmpdate.getTime()));
-                ps.setMarketName(stockname);
-                ps.setIndexData(BigDecimal.valueOf(Double.parseDouble(INDEXDATA)));
-
-                PowereconStockmarketExample psex=new PowereconStockmarketExample();
-//                GeneratedCriteria cr=psex.createCriteria();
-//                cr.andItemdateEqualTo(tmpdate);
-//                cr.andMarketnameEqualTo(stockname);
-//                psa=psm.selectByExample(psex);
-//                int conExist=psa.size();
-//                System.out.println(conExist+":"+stockname+":"+INDEXDATA+":"+ja_result.getString("uptime").substring(0,10));
-//                if(conExist==0)
-//                    psm.insert(ps);
-//                else
-//                {
-//                    pcp=psa.get(0);
-//                    if(pcp.getMarketname().equals(ps.getMarketname())&&pcp.getIndexdata().doubleValue()!=ps.getIndexdata().doubleValue())
-//                    {
-//                        PowereconStockmarketExample psexu=new PowereconStockmarketExample();
-//                        PowereconStockmarketExample.Criteria cru=psexu.createCriteria();
-//                        cru.andIdEqualTo(pcp.getId());
-//
-//                        psu.setIndexdata(ps.getIndexdata());
-//                        psm.updateByExampleSelective(psu, psexu);
-//
-//                    }
-//                }
+                stockMarket.setId(RCID);
+                stockMarket.setItemDate(new Timestamp(tmpdate.getTime()));
+                stockMarket.setMarketName(stockname);
+                stockMarket.setIndexData(BigDecimal.valueOf(Double.parseDouble(INDEXDATA)));
             }
             System.out.println(DateFormatUtils.format(System.currentTimeMillis(),"yyyy-MM-dd HH:mm:ss")+" 大盘股票获取成功");
         }

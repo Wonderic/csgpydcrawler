@@ -1,7 +1,6 @@
 package com.kit.csg.crawler.weather.job;
 
 import com.kit.csg.crawler.weather.service.CloudWeatherService;
-import com.kit.csg.utils.SOAPUtils;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -23,8 +22,12 @@ public class WeatherJob implements Job{
         String startTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(startTime+" — WeatherJob Job Start");
 
+
         Map data = cloudWeatherService.crawlData();
-        SOAPUtils.send(data);
+//        boolean sendResult = SOAPUtils.send(data);
+        if(true){
+            cloudWeatherService.saveData(data);
+        }
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(endTime+" — WeatherJob Job End");

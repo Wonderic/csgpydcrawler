@@ -35,16 +35,13 @@ public class TyphoonService {
     private TyphoonRouteRepository typhoonRouteRepository;
 
     @Transactional(propagation= Propagation.REQUIRES_NEW)
+    public void saveData(Map map){
+        List<TyphoonSummary> typhoonSummaryList = (List)map.get("summary");
+        List<TyphoonRoute> typhoonRouteList = (List)map.get("route");
+        typhoonSummaryRepository.save(typhoonSummaryList);
+        typhoonRouteRepository.save(typhoonRouteList);
+    }
     public Map crawlData(){
-        Map data = getTyphoonData();
-        return data;
-    }
-
-    @Transactional(propagation= Propagation.REQUIRES_NEW)
-    private void  batchSaveSummary(List<TyphoonSummary> typhoonSummaryList){
-        typhoonSummaryRepository.save(typhoonSummaryList.get(0));
-    }
-    private Map getTyphoonData(){
         Map resultMap = new HashMap();
         resultMap.put("type","typhoon");
 //        Integer year =  Calendar.getInstance().get(Calendar.YEAR);
@@ -64,7 +61,7 @@ public class TyphoonService {
 
                     Map zjSummaryMap = (Map)v2;
 
-                    String id = UUID.randomUUID().toString();
+                    String id = UUID.randomUUID().toString().replaceAll("-","");
                     Integer typhoonNum = Integer.parseInt((String)k1);
                     String typhoonNameEn = (String)jpSummaryMap.get("enname");
                     String typhoonNameZh = (String)zjSummaryMap.get("name");
@@ -89,12 +86,12 @@ public class TyphoonService {
                         Map routeMap = (Map)route;
                         TyphoonRoute typhoonRoute = new TyphoonRoute();
 
-                        String routeId = UUID.randomUUID().toString();
+                        String routeId = UUID.randomUUID().toString().replaceAll("-","");
                         Integer centeredPressure = Integer.valueOf((String)routeMap.get("pressure"));
                         Timestamp dispTime = new Timestamp(Timestamp.valueOf(((String)(routeMap.get("time"))).substring(0,16) + ":00").getTime());
                         Integer typhoonClass = Integer.valueOf((String)routeMap.get("class"));
-                        BigDecimal typhoonLat = BigDecimal.valueOf(Double.valueOf((String)routeMap.get("lat")));
-                        BigDecimal typhoonLng = BigDecimal.valueOf(Double.valueOf((String)routeMap.get("lng")));
+                        String typhoonLat = BigDecimal.valueOf(Double.valueOf((String)routeMap.get("lat"))).toString();
+                        String typhoonLng = BigDecimal.valueOf(Double.valueOf((String)routeMap.get("lng"))).toString();
                         Integer winddStrength = Integer.valueOf((String)routeMap.get("wind"));
 
                         typhoonRoute.setId(routeId);
@@ -130,12 +127,7 @@ public class TyphoonService {
                 routeListTemp.add(o);
         });
 
-        typhoonSummaryRepository.save(summaryListTemp.get(0));
 
-//        batchSaveSummary(summaryListTemp);
-//        typhoonSummaryRepository.flush();
-//        typhoonRouteRepository.save(routeListTemp);
-//        typhoonRouteRepository.flush();
         resultMap.put("summary",summaryListTemp);
         resultMap.put("route",routeListTemp);
         return resultMap;
