@@ -1,0 +1,23 @@
+package com.kit.csg.crawler.stock.entity;
+
+public class NbsDoneIndex {
+    private String indexcode;
+
+    private String fscode;
+
+    public String getIndexcode() {
+        return indexcode;
+    }
+
+    public void setIndexcode(String indexcode) {
+        this.indexcode = indexcode;
+    }
+
+    public String getFscode() {
+        return fscode;
+    }
+
+    public void setFscode(String fscode) {
+        this.fscode = fscode;
+    }
+}

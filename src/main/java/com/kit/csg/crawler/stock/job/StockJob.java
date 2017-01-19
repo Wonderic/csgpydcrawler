@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 
 @Component
@@ -22,7 +23,12 @@ public class StockJob implements Job{
         String startTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(startTime+" — StockJob Job Start");
 
-        stockService.crawlData();
+        Map data = stockService.crawlData();
+//      boolean sendResult = SOAPUtils.send(data);
+        if(true){
+            stockService.saveData(data);
+        }
+
 
         String endTime = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM).format(System.currentTimeMillis());
         System.out.println(endTime+" — StockJob Job End");

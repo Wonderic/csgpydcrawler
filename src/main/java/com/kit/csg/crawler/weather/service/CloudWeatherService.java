@@ -47,6 +47,7 @@ public class CloudWeatherService {
 
         List<CITY> cityList = cityRepository.findAll();
         for (int i = 0; i < 10; i++) {
+            CITY city = cityList.get(i);
             try {
                 Thread.sleep(800);
             } catch (InterruptedException e) {
@@ -55,7 +56,7 @@ public class CloudWeatherService {
             }
             //下载数据
             try {
-                formatUrl = String.format(URL, URLEncoder.encode(cityList.get(i).getName()));
+                formatUrl = String.format(URL, URLEncoder.encode(city.getName()));
                 result = HTTPUtils.HttpGetJson(formatUrl);
             } catch (IOException e) {
                 e.printStackTrace();

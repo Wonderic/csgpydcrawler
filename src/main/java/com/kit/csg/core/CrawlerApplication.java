@@ -1,7 +1,6 @@
 package com.kit.csg.core;
 
 import com.kit.csg.crawler.index.job.IndexJob;
-import com.kit.csg.crawler.internet.job.InternetJob;
 import com.kit.csg.crawler.stock.job.StockJob;
 import com.kit.csg.crawler.typhoon.job.TyphoonJob;
 import com.kit.csg.crawler.weather.job.WeatherJob;
@@ -36,16 +35,15 @@ public class CrawlerApplication {
 			//股票数据
 			JobDetail stockJobDetail= JobBuilder.newJob(StockJob.class).withIdentity("stock","csgpydcrawler").build();
 
-			//统计局数据
+			//统计局、百度、阿里数据
 			JobDetail indexJobDetail= JobBuilder.newJob(IndexJob.class).withIdentity("index","csgpydcrawler").build();
-
-			//百度、阿里数据
-			JobDetail internetJobDetail= JobBuilder.newJob(InternetJob.class).withIdentity("internet","csgpydcrawler").build();
 
 			SimpleScheduleBuilder scheduleBuilder=SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1000).repeatForever();
 //			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
-			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
-//			scheduler.scheduleJob(stockJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+//			scheduler.scheduleJob(weatherJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+			scheduler.scheduleJob(stockJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+//			scheduler.scheduleJob(internetJobDetail,TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build());
+
 
 
 //			scheduler.scheduleJob(typhoonJobDetail,TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/2 ? * *")).build());
